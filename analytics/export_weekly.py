@@ -31,7 +31,7 @@ TZ = ZoneInfo("America/Chicago")
 CITY_COLUMNS = [
     "week","country","state_region","city","bot_dummy","total_visits",
     "desktop_visits","phone_visits","tablet_visits","homepage_views","app_views",
-    "cv_clicks","cv_downloads","jmp_paper_clicks","jmp_pdf_downloads",
+    "cv_clicks","cv_downloads","jmp_paper_clicks","jmp_pdf_downloads","jmp_abstract_clicks",
     "downside_paper_clicks","downside_abstract_clicks","downside_pdf_downloads",
     "subnational_income_paper_clicks","subnational_income_abstract_clicks",
     "pedl_policy_note_clicks","pedl_abstract_clicks","google_scholar_clicks",
@@ -42,7 +42,7 @@ CITY_COLUMNS = [
 REFERRAL_COLUMNS = [
     "date","referrer_category","referrer_domain","bot_dummy","total_visits",
     "desktop_visits","phone_visits","tablet_visits","homepage_views","app_views",
-    "cv_clicks","cv_downloads","jmp_paper_clicks","jmp_pdf_downloads",
+    "cv_clicks","cv_downloads","jmp_paper_clicks","jmp_pdf_downloads","jmp_abstract_clicks",
     "downside_paper_clicks","downside_abstract_clicks","downside_pdf_downloads",
     "subnational_income_paper_clicks","subnational_income_abstract_clicks",
     "pedl_policy_note_clicks","pedl_abstract_clicks","google_scholar_clicks",

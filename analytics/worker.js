@@ -14,6 +14,7 @@ const EVENT_COLUMNS = {
   cv_download: ["cv_downloads", "all_downloads"],
   jmp_paper: ["jmp_paper_clicks"],
   jmp_pdf_download: ["jmp_pdf_downloads", "all_downloads"],
+  jmp_abstract: ["jmp_abstract_clicks"],
   downside_paper: ["downside_paper_clicks"],
   downside_abstract: ["downside_abstract_clicks"],
   downside_pdf_download: ["downside_pdf_downloads", "all_downloads"],

@@ -46,6 +46,7 @@ cv_clicks
 cv_downloads
 jmp_paper_clicks
 jmp_pdf_downloads
+jmp_abstract_clicks
 downside_paper_clicks
 downside_abstract_clicks
 downside_pdf_downloads
@@ -73,6 +74,7 @@ Definitions:
 - `cv_downloads`: CV download/open-link activations.
 - `jmp_paper_clicks`: clicks on the JMP paper button.
 - `jmp_pdf_downloads`: JMP PDF/download-link activations.
+- `jmp_abstract_clicks`: clicks opening the JMP abstract.
 - `downside_paper_clicks`: clicks on the Downside-Risk Sharing paper link.
 - `downside_abstract_clicks`: clicks opening its abstract.
 - `downside_pdf_downloads`: Downside PDF download/open-link activations.
@@ -109,6 +111,7 @@ cv_clicks
 cv_downloads
 jmp_paper_clicks
 jmp_pdf_downloads
+jmp_abstract_clicks
 downside_paper_clicks
 downside_abstract_clicks
 downside_pdf_downloads
