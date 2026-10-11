@@ -1,0 +1,19 @@
+name = "federico-site-analytics"
+main = "worker.js"
+compatibility_date = "2026-10-10"
+
+# Create the D1 database first, then replace this ID.
+[[d1_databases]]
+binding = "DB"
+database_name = "federico-site-analytics"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+
+# These are Worker ROUTES in front of the existing GitHub Pages origin.
+# The DNS records for the hostnames must be proxied through Cloudflare.
+[[routes]]
+pattern = "federicolenzi.com/*"
+zone_name = "federicolenzi.com"
+
+[[routes]]
+pattern = "www.federicolenzi.com/*"
+zone_name = "federicolenzi.com"
