@@ -1,0 +1,63 @@
+ANALYTICS SETUP CHECKLIST
+=========================
+
+The website files are already instrumented. Analytics start only after the Cloudflare Worker is deployed.
+
+1. Create a PRIVATE GitHub repository for the weekly CSV folders, for example:
+   federico-website-analytics-private
+
+2. In Cloudflare, proxy federicolenzi.com / www.federicolenzi.com and create a D1 database:
+   npx wrangler d1 create federico-site-analytics
+
+3. Copy analytics/wrangler.toml.example to analytics/wrangler.toml and insert the D1 database ID.
+
+4. Create the current aligned D1 schema:
+   npx wrangler d1 execute federico-site-analytics --remote --file=analytics/schema.sql
+
+5. Deploy the Worker:
+   npx wrangler deploy --config analytics/wrangler.toml
+
+6. In the PUBLIC website GitHub repository, add Actions secrets:
+   CLOUDFLARE_API_TOKEN
+   CLOUDFLARE_ACCOUNT_ID
+   CLOUDFLARE_D1_DATABASE_ID
+   PRIVATE_ANALYTICS_REPO
+   PRIVATE_ANALYTICS_REPO_TOKEN
+
+7. Upload/push this website folder to the public GitHub Pages repository.
+
+8. Test .github/workflows/weekly_analytics.yml manually once using "Run workflow".
+   After that it runs every Monday at 00:17 America/Chicago.
+
+PRIVATE REPOSITORY OUTPUT
+-------------------------
+No growing master files are created.
+Each week gets a NEW folder and three NEW CSV files, for example:
+
+website-analytics/2026-W42/
+  city_weekly_2026-W42.csv
+  referral_daily_2026-W42.csv
+  bots_weekly_2026-W42.csv
+
+website-analytics/2026-W43/
+  city_weekly_2026-W43.csv
+  referral_daily_2026-W43.csv
+  bots_weekly_2026-W43.csv
+
+The referral file contains seven daily dates for that week. The city and bot files are weekly aggregates.
+Re-running a week replaces only that week's files; it does not append duplicate rows.
+
+Read analytics/SETUP.md for full details and analytics/CODEBOOK.md for exact variable order and definitions.
+
+WEEKLY FILE SIZE / DIRECTORY RULE
+---------------------------------
+The workflow creates a NEW directory and three NEW CSV files for every completed week.
+It does not append all history into one large CSV.
+
+Example:
+  website-analytics/2026-W42/city_weekly_2026-W42.csv
+  website-analytics/2026-W42/referral_daily_2026-W42.csv
+  website-analytics/2026-W42/bots_weekly_2026-W42.csv
+  website-analytics/2026-W43/city_weekly_2026-W43.csv
+  website-analytics/2026-W43/referral_daily_2026-W43.csv
+  website-analytics/2026-W43/bots_weekly_2026-W43.csv

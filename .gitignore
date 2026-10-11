@@ -1,0 +1,8 @@
+# Cloudflare local state and secrets
+.wrangler/
+.dev.vars
+analytics/wrangler.toml
+
+# Never commit local/private analytics exports into the public website repo
+analytics_export/
+website-analytics/
