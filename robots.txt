@@ -1,0 +1,46 @@
+# --------------------------------------------------
+# Public academic website
+# Public pages are searchable.
+# Early drafts / WIP files are not for crawlers.
+# --------------------------------------------------
+
+User-agent: *
+Allow: /
+Disallow: /drafts/
+Disallow: /files/wip/
+
+
+# --------------------------------------------------
+# Opt out of model-training / bulk AI data collection
+# --------------------------------------------------
+
+# OpenAI model-training crawler
+User-agent: GPTBot
+Disallow: /
+
+# Anthropic model-training crawler
+User-agent: ClaudeBot
+Disallow: /
+
+# Google Gemini training / certain Gemini grounding uses
+User-agent: Google-Extended
+Disallow: /
+
+# Apple foundation-model training
+User-agent: Applebot-Extended
+Disallow: /
+
+# Common Crawl open web corpus
+User-agent: CCBot
+Disallow: /
+
+# Meta AI / foundation-model collection
+User-agent: meta-externalagent
+Disallow: /
+
+
+# --------------------------------------------------
+# Sitemap
+# --------------------------------------------------
+
+Sitemap: https://federicolenzi.com/sitemap.xml
