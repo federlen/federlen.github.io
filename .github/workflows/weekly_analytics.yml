@@ -1,0 +1,65 @@
+name: Weekly private analytics export
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Monday 00:17 America/Chicago: exports the fully completed Monday-Sunday week.
+    - cron: "17 0 * * 1"
+      timezone: "America/Chicago"
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout website repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Export previous completed week from Cloudflare D1
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_D1_DATABASE_ID: ${{ secrets.CLOUDFLARE_D1_DATABASE_ID }}
+        run: python analytics/export_weekly.py "$RUNNER_TEMP/analytics-export"
+
+      - name: Checkout private analytics repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ secrets.PRIVATE_ANALYTICS_REPO }}
+          token: ${{ secrets.PRIVATE_ANALYTICS_REPO_TOKEN }}
+          path: private-analytics
+
+      - name: Save three NEW weekly CSV files
+        shell: bash
+        run: |
+          set -euo pipefail
+          EXPORT_WEEK="$(tr -d '\r\n' < "$RUNNER_TEMP/analytics-export/export_week.txt")"
+          SRC="$RUNNER_TEMP/analytics-export/$EXPORT_WEEK"
+          DEST="private-analytics/website-analytics/$EXPORT_WEEK"
+          mkdir -p "$DEST"
+          cp "$SRC/city_weekly_${EXPORT_WEEK}.csv" "$DEST/"
+          cp "$SRC/referral_daily_${EXPORT_WEEK}.csv" "$DEST/"
+          cp "$SRC/bots_weekly_${EXPORT_WEEK}.csv" "$DEST/"
+          echo "EXPORT_WEEK=$EXPORT_WEEK" >> "$GITHUB_ENV"
+
+      - name: Commit weekly analytics files
+        working-directory: private-analytics
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "website-analytics-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "website-analytics/${EXPORT_WEEK}"
+          if git diff --cached --quiet; then
+            echo "No analytics changes to commit for ${EXPORT_WEEK}."
+            exit 0
+          fi
+          git commit -m "Website analytics ${EXPORT_WEEK}"
+          git push
